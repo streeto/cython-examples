@@ -8,7 +8,7 @@ import numpy as np
 cimport numpy as np
 cimport cython
 
-__all__ = ['hypot']
+__all__ = ['hypot', 'hypot_naive']
 
 cdef extern from 'math.h':
     double sqrt(double x)
@@ -26,5 +26,17 @@ def hypot(np.ndarray[np.double_t, ndim=1, mode='c'] x not None,
         xi = x[i]
         yi = y[i]
         h[i] = sqrt(xi * xi + yi * yi)
+
+    return h
+
+
+def hypot_naive(x, y):
+    
+    h = np.empty_like(x)
+
+    for i in xrange(len(x)):
+        xi = x[i]
+        yi = y[i]
+        h[i] = np.sqrt(xi * xi + yi * yi)
 
     return h
